@@ -1,13 +1,9 @@
 name: Auto commit
 
 on:
-  push:
-    branches:
-      - master
-      - main
-
   schedule:
-    - cron: "28 * * * *"
+    # 08:00 WIB (Asia/Jakarta) = 01:00 UTC
+    - cron: "0 1 * * *"
 
   workflow_dispatch:
 
@@ -22,38 +18,13 @@ jobs:
   auto_commit:
     runs-on: ubuntu-latest
     steps:
-      - name: DEBUG
-        run: echo "::debug::Ref = ${{github.ref}}"
-
       - uses: actions/checkout@v5
         with:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
 
-      - name: Modify last update
-        run: |
-          d=`date '+%Y-%m-%dT%H:%M:%SZ'`
-          echo $d > LAST_UPDATED
-
-      - name: Commit changes
-        run: |
-          git config --local user.email "asrofilnadibs28@gmail.com"
-          git config --local user.name "asrofilnadib"
-
-          arr[0]="chore(bot): 😂 auto commit"
-          arr[1]="chore(bot): 😱 auto commit"
-          arr[2]="chore(bot): 👿 auto commit"
-          arr[3]="chore(bot): 🤖 auto commit"
-          arr[4]="chore(bot): 🟩 auto commit"
-
-          for i in 1 2 3 4 5; do
-            d=$(date -u '+%Y-%m-%dT%H:%M:%S')Z
-            echo "${d}" > LAST_UPDATED
-            git add LAST_UPDATED
-            rand=$((RANDOM % ${#arr[@]}))
-            git diff --staged --quiet || git commit -m "${arr[$rand]}"
-            sleep 1
-          done
+      - name: Daily commits (5 unique emoji per day)
+        run: bash scripts/daily-auto-commit.sh
 
       - name: GitHub Push
         run: |
