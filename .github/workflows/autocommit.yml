@@ -39,17 +39,21 @@ jobs:
         run: |
           git config --local user.email "asrofilnadibs28@gmail.com"
           git config --local user.name "asrofilnadib"
-          git add -A
 
-          arr[0]="chore(bot): update activity"
-          arr[1]="chore(bot): refresh timestamp"
-          arr[2]="chore(bot): sync LAST_UPDATED"
-          arr[3]="chore(bot): routine update"
-          arr[4]="chore(bot): maintenance commit"
+          arr[0]="chore(bot): 😂 auto commit"
+          arr[1]="chore(bot): 😱 auto commit"
+          arr[2]="chore(bot): 👿 auto commit"
+          arr[3]="chore(bot): 🤖 auto commit"
+          arr[4]="chore(bot): 🟩 auto commit"
 
-          rand=$((RANDOM % ${#arr[@]}))
-
-          git diff --staged --quiet || git commit -m "${arr[$rand]}"
+          for i in 1 2 3 4 5; do
+            d=$(date -u '+%Y-%m-%dT%H:%M:%S')Z
+            echo "${d}" > LAST_UPDATED
+            git add LAST_UPDATED
+            rand=$((RANDOM % ${#arr[@]}))
+            git diff --staged --quiet || git commit -m "${arr[$rand]}"
+            sleep 1
+          done
 
       - name: GitHub Push
         run: |
