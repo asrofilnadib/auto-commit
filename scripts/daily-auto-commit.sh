@@ -22,7 +22,7 @@ POOL = [
     "👋",
 ]
 
-COMMITS_PER_RUN = 6
+COMMITS_PER_RUN = 12
 STATE_PATH = Path(".auto-commit/daily-emojis.json")
 today = datetime.now(ZoneInfo("Asia/Jakarta")).date().isoformat()
 
