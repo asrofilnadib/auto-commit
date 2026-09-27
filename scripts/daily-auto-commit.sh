@@ -17,12 +17,12 @@ from zoneinfo import ZoneInfo
 
 POOL = [
     "🐓", "😹", "😜", "😭", "🐢", "👅", "💪",
-    "🪽", "🦋", "🙏", "🙈", "🐐", "🐈‍⬛", "🕳️", 
-    "💣", "💬", "🤣", "🏋️‍♂️", "🗯️", "💭", "💤", 
+    "🪽", "🦋", "🙏", "🙈", "🐐", "🐈‍⬛", "👻", 
+    "💣", "💬", "🤣", "🏋️‍♂️", "🙊", "🙉", "💩", 
     "👋",
 ]
 
-COMMITS_PER_RUN = 5
+COMMITS_PER_RUN = 6
 STATE_PATH = Path(".auto-commit/daily-emojis.json")
 today = datetime.now(ZoneInfo("Asia/Jakarta")).date().isoformat()
 
