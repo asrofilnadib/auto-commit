@@ -1,0 +1,57 @@
+name: Auto commit
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+  schedule:
+    - cron: "28 * * * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-commit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  auto_commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DEBUG
+        run: echo "::debug::Ref = ${{github.ref}}"
+
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Modify last update
+        run: |
+          d=`date '+%Y-%m-%dT%H:%M:%SZ'`
+          echo $d > LAST_UPDATED
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "asrofilnadibs28@gmail.com"
+          git config --local user.name "asrofilnadib"
+          git add -A
+
+          arr[0]="chore(bot): update activity"
+          arr[1]="chore(bot): refresh timestamp"
+          arr[2]="chore(bot): sync LAST_UPDATED"
+          arr[3]="chore(bot): routine update"
+          arr[4]="chore(bot): maintenance commit"
+
+          rand=$((RANDOM % ${#arr[@]}))
+
+          git diff --staged --quiet || git commit -m "${arr[$rand]}"
+
+      - name: GitHub Push
+        run: |
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
