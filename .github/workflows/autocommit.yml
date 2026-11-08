@@ -23,7 +23,7 @@ jobs:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
 
-      - name: Daily commits (5 unique emoji per day)
+      - name: Daily commits (10–22 random per day)
         run: bash scripts/daily-auto-commit.sh
 
       - name: GitHub Push
